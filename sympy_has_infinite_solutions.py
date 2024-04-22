@@ -66,5 +66,5 @@ eq3 = Eq(2*x + y + z, 4)
 system1 = [eq1, eq2, eq3]
 
 print("System 1 has infinitely many solutions:", has_infinite_solutions(system1))
-print("System 1 has unique solutions:", has_unique_solution(system1))
+print("System 1 has unique solution:", has_unique_solution(system1))
 
