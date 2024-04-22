@@ -1,4 +1,4 @@
-from sympy import symbols, Eq, Matrix
+from sympy import symbols, Eq, linsolve, Matrix, solve
 
 def has_infinite_solutions(equations):
     """
@@ -57,6 +57,16 @@ def has_unique_solution(equations):
     num_variables = len(variables)
     return num_pivots_A == num_variables
 
+def has_no_solution(eqns):
+    # Define symbols
+    variables = list(set().union(*[eq.free_symbols for eq in eqns]))
+
+    # Solve the system of equations
+    solutions = solve(eqns, variables)
+
+    # Check if the system has no solution
+    return solutions == []
+
 
 # Example usage
 x, y, z = symbols('x y z')
@@ -67,4 +77,5 @@ system1 = [eq1, eq2, eq3]
 
 print("System 1 has infinitely many solutions:", has_infinite_solutions(system1))
 print("System 1 has unique solution:", has_unique_solution(system1))
+print("System 1 has no solution:", has_no_solution(system1))
 
