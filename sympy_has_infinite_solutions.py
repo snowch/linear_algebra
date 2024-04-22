@@ -28,7 +28,6 @@ def has_infinite_solutions(equations):
     num_variables = len(variables)
     return num_pivots_A < num_variables
 
-from sympy import symbols, Eq, Matrix
 
 def has_unique_solution(equations):
     """
