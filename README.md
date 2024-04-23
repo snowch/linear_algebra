@@ -33,6 +33,22 @@ My notes for: https://understandinglinearalgebra.org/ula.html
  - [Markov chains and Google’s PageRank algorithm]()
 
 #### Linear algebra and computing - TODO
+ - [Markov chains and Google’s PageRank algorithm]()
+ - [Finding eigenvectors numerically]()
+
+#### Orthogonality and Least Squares - TODO
+ - The dot product
+ - Orthogonal complements and the matrix transpose
+ - Orthogonal bases and projections
+ - Finding orthogonal bases
+ - Orthogonal least squares
+
+#### Singular value decompositions
+ - Symmetric matrices and variance
+ - Quadratic forms
+ - Principal Component Analysis
+ - Singular Value Decompositions
+ - Using Singular Value Decompositions
 
 ---
 
