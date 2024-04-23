@@ -130,3 +130,98 @@ print(B.rref())
 > - If every column of the coefficient matrix contains a pivot position, then the system has a unique solution.
 > - If there is a column in the coefficient matrix that contains no pivot position, then the system has infinitely many solutions.
 > - Columns that contain a pivot position correspond to basic variables while columns that do not correspond to free variables.
+
+```python
+from sympy import symbols, Eq, solve, Matrix
+
+x, y, z = symbols('x y z')
+
+def has_solution(augmented_matrix):
+    
+    # Extract coefficients and constants from the augmented matrix
+    coefficients = augmented_matrix[:, :-1]
+    constants = augmented_matrix[:, -1]
+
+    # Create equations from the coefficients and constants
+    equations = []
+    for i in range(len(constants)):
+        equation = Eq(coefficients[i, 0]*x + coefficients[i, 1]*y + coefficients[i, 2]*z, constants[i])
+        equations.append(equation)
+
+    solution = solve((equations[0], equations[1], equations[2]), (x, y, z))
+    return solution
+
+def solution_details(augmented_matrix):
+    '''
+    - If every column of the coefficient matrix contains a pivot position, 
+      then the system has a unique solution.
+    - If there is a column in the coefficient matrix that contains no pivot position, 
+      then the system has infinitely many solutions.
+    - Columns that contain a pivot position correspond to basic variables
+      Columns that do not contain a pivot position correspond to free variables.
+    '''
+    solution = has_solution(augmented_matrix)
+    
+    if not solution:
+        return 'No Solution.\n'
+    
+    coeff_matrix = augmented_matrix[:, :-1]  # Extracting only the coefficient matrix
+    pivot_columns = coeff_matrix.rref()[1]
+    coeff_num_cols = coeff_matrix.shape[0]
+    
+    # columns with a pivot
+    basic_variable_columns = list(pivot_columns)
+    
+    # columns without a pivot
+    free_variable_columns = list(set(range(coeff_num_cols)) - set(pivot_columns))
+    
+    if len(pivot_columns) == coeff_num_cols:
+        return (
+                f'Unique Solution:\n'
+                f'  Basic Variable Columns {basic_variable_columns}\n'
+                f'  Free Variable Columns: {free_variable_columns}\n'
+                f'  Solution: {solution}\n'
+               )
+    elif len(pivot_columns) < coeff_num_cols:
+        return (
+                f'Infinitely Many Solutions:\n'
+                f'  Basic Variable Columns {basic_variable_columns}\n'
+                f'  Free Variable Columns: {free_variable_columns}\n'
+                f'  Solution: {solution}\n'
+               )
+
+# Test matrices
+A = Matrix([
+    [1, 2, 3, 4],
+    [0, 1, 2, 3],
+    [0, 0, 1, 2]
+])
+
+B = Matrix([
+    [1, 2, 3, 4],
+    [0, 1, 2, 3],
+    [0, 0, 0, 1]
+])
+
+C = Matrix([
+    [1, 2, -3, 4],
+    [2, 4, -6, 8],
+    [3, 6, -9, 12]  # All entries in the last column are 0
+])
+
+print("Matrix A:", solution_details(A))
+print("Matrix B:", solution_details(B))
+print("Matrix C:", solution_details(C))
+
+# Matrix A: Unique Solution:
+#   Basic Variable Columns [0, 1, 2]
+#   Free Variable Columns: []
+#   Solution: {x: 0, y: -1, z: 2}
+# 
+# Matrix B: No Solution.
+# 
+# Matrix C: Infinitely Many Solutions:
+#   Basic Variable Columns [0]
+#   Free Variable Columns: [1, 2]
+#   Solution: {x: -2*y + 3*z + 4}
+```
