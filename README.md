@@ -14,6 +14,9 @@ My notes for: https://understandinglinearalgebra.org/ula.html
  - [Vectors and linear combinations](./2.1_vectors_and_linear_combinations.md)
  - [Matrix multiplication and linear combinations](./2.2_matrix_multiplication_and_linear_combinations.md)
  - [The span of a set of vectors](./2.3_the_span_of_a_set_of_vectors.md)
+ - [Linear independence - TODO]()
+ - [Matrix transformations - TODO]()
+ - [The geometry of matrix transformations - TODO]()
 
 #### Invertibility, bases, and coordinate systems - TODO
  - [Invertibility]()
