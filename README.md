@@ -20,3 +20,7 @@ My notes for: https://understandinglinearalgebra.org/ula.html
 The material presented in this document is adapted from "Understanding Linear Algebra" by David Austin, a professor of mathematics at Grand Valley State University. The original work is available at understandinglinearalgebra.org.
 
 ---
+
+Study Notes for Understanding Linear Algebra © 2024 by Chris Snow is licensed under CC BY 4.0 
+
+---
