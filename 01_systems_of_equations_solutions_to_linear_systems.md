@@ -1,5 +1,8 @@
 ### Pivots
 
+---
+
+
 #### Finding solutions to linear systems.
 
 Gaussian elimination - reduced row echelon form (RREF)
@@ -26,6 +29,9 @@ print(reduced_row_echelon_form[0])
 # Matrix([[1, 2, -3, 4], [0, 0, 0, 0], [0, 0, 0, 0]])
 ```
 </details>
+
+---
+
 
 #### Augmented, Coefficient and Constant Matrices
 
@@ -54,3 +60,6 @@ print("Constant Matrix:", constant_matrix)
 # Constant Matrix: Matrix([[4], [8], [12]])
 ```
 </details>
+
+---
+
