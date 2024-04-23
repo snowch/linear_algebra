@@ -49,5 +49,8 @@ constant_matrix = augmented_matrix[:, -1:]
 # Print the reduced row echelon form
 print("Coefficient Matrix:", coefficient_matrix)
 print("Constant Matrix:", constant_matrix)
+
+# Coefficient Matrix: Matrix([[1, 2, -3], [2, 4, -6], [3, 6, -9]])
+# Constant Matrix: Matrix([[4], [8], [12]])
 ```
 </details>
