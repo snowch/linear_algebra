@@ -89,10 +89,8 @@ from sympy import Matrix
 
 def is_consistent(matrix):
     coeff_matrix = matrix[:, :-1]  # Extracting only the coefficient matrix
-    rref_matrix = coeff_matrix.rref()[0]
-    num_cols = rref_matrix.shape[1]
-    num_pivots = sum(1 for row in rref_matrix.tolist() if any(row))
-    return num_pivots == coeff_matrix.shape[0]
+    pivot_columns = coeff_matrix.rref()[1]
+    return len(pivot_columns) == coeff_matrix.shape[0]
 
 # Test matrices
 A = Matrix([
