@@ -11,6 +11,8 @@ When we encounter a linear system, we often ask:
 
 > **Definition 1.4.1**.  A pivot position in a matrix $A$ is the position of a leading entry in the reduced row echelon matrix of $A$.
 
+<details>
+
 **Sympy** [docs](https://docs.sympy.org/latest/modules/matrices/matrices.html)
 ```python
 from sympy import Matrix
@@ -27,10 +29,13 @@ rref_matrix
 rref_pivots
 # (0, 1) # tuple of pivot columns
 ```
+</details>
 
 #### The existence of solutions
 
 > **Proposition 1.4.3.**  A linear system is inconsistent if and only if there is a pivot position in the rightmost column of the corresponding augmented matrix.
+
+<details>
 
 ```python
 from sympy import Matrix
@@ -124,12 +129,16 @@ print(B.rref())
 # [0, 0,  0, 1]]), (0, 1, 3))
 ```
 
+</details>
+
 #### The uniqueness of solutions
 
 > **Principle 1.4.5.**  Suppose that we consider a consistent linear system.
 > - If every column of the coefficient matrix contains a pivot position, then the system has a unique solution.
 > - If there is a column in the coefficient matrix that contains no pivot position, then the system has infinitely many solutions.
 > - Columns that contain a pivot position correspond to basic variables while columns that do not correspond to free variables.
+
+<details>
 
 ```python
 from sympy import symbols, Eq, solve, Matrix
@@ -225,3 +234,4 @@ print("Matrix C:", solution_details(C))
 #   Free Variable Columns: [1, 2]
 #   Solution: {x: -2*y + 3*z + 4}
 ```
+</details>
