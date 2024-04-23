@@ -11,8 +11,8 @@ When we encounter a linear system, we often ask:
 
 > **Definition 1.4.1**.  A pivot position in a matrix $A$ is the position of a leading entry in the reduced row echelon matrix of $A$.
 
-[**Sympy**](https://docs.sympy.org/latest/modules/matrices/matrices.html)
-```
+**Sympy** [docs](https://docs.sympy.org/latest/modules/matrices/matrices.html)
+```python
 from sympy import Matrix
 from sympy.abc import x
 m = Matrix([[1, 2], [x, 1 - 1/x]])
@@ -31,6 +31,56 @@ rref_pivots
 #### The existence of solutions
 
 > **Proposition 1.4.3.**  A linear system is inconsistent if and only if there is a pivot position in the rightmost column of the corresponding augmented matrix.
+
+```python
+from sympy import Matrix
+
+def is_consistent_augmented(augmented_matrix):
+    # Convert the augmented matrix to row echelon form (REF)
+    rref_matrix, pivot_columns = augmented_matrix.rref()
+    
+    # Check if there is a pivot position in the rightmost column
+    num_rows, num_cols = rref_matrix.shape
+    for row in range(num_rows):
+        if all(rref_matrix[row, col] == 0 for col in range(num_cols - 1)) and rref_matrix[row, num_cols - 1] != 0:
+            # Pivot in the rightmost column found, matrix is inconsistent
+            return False
+    
+    # No pivot in the rightmost column found, matrix is consistent
+    return True
+
+# Test augmented matrices
+A_augmented = Matrix([
+    [1, 2, 3, 4],
+    [0, 1, 2, 3],
+    [0, 0, 1, 2]
+])
+
+B_augmented = Matrix([
+    [1, 2, 3, 4],
+    [0, 1, 2, 3],
+    [0, 0, 0, 1]
+])
+
+# Test the function
+print("Augmented matrix A is consistent:", is_consistent_augmented(A_augmented))
+print(A_augmented.rref())
+print()
+print("Augmented matrix B is consistent:", is_consistent_augmented(B_augmented))
+print(B_augmented.rref())
+
+# Augmented matrix A is consistent: True
+# (Matrix([
+# [1, 0, 0,  0],
+# [0, 1, 0, -1],
+# [0, 0, 1,  2]]), (0, 1, 2))
+# 
+# Augmented matrix B is consistent: False
+# (Matrix([
+# [1, 0, -1, 0],
+# [0, 1,  2, 0],
+# [0, 0,  0, 1]]), (0, 1, 3))
+```
 
 > **Proposition 1.4.4.** If every row of the coefficient matrix has a pivot position, then the corresponding system of linear equations is consistent.
 
