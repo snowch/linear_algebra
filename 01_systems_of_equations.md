@@ -169,10 +169,6 @@ def solution_details(augmented_matrix):
     - Columns that contain a pivot position correspond to basic variables
       Columns that do not contain a pivot position correspond to free variables.
     '''
-    solution = has_solution(augmented_matrix)
-    
-    if not solution:
-        return 'No Solution.\n'
     
     coeff_matrix = augmented_matrix[:, :-1]  # Extracting only the coefficient matrix
     pivot_columns = coeff_matrix.rref()[1]
@@ -183,21 +179,23 @@ def solution_details(augmented_matrix):
     
     # columns without a pivot
     free_variable_columns = list(set(range(coeff_num_cols)) - set(pivot_columns))
+ 
+    solution = has_solution(augmented_matrix)
     
-    if len(pivot_columns) == coeff_num_cols:
-        return (
-                f'Unique Solution:\n'
-                f'  Basic Variable Columns {basic_variable_columns}\n'
-                f'  Free Variable Columns: {free_variable_columns}\n'
-                f'  Solution: {solution}\n'
-               )
+    response = ""
+    
+    if not solution:
+        response = 'No Solution.\n'
+    elif len(pivot_columns) == coeff_num_cols:
+        response = 'Unique Solution (pivot position in each col):\n'
     elif len(pivot_columns) < coeff_num_cols:
-        return (
-                f'Infinitely Many Solutions:\n'
-                f'  Basic Variable Columns {basic_variable_columns}\n'
-                f'  Free Variable Columns: {free_variable_columns}\n'
-                f'  Solution: {solution}\n'
-               )
+        response = 'Infinitely Many Solutions (>= 1 coeff col with no pivots):\n'
+    
+    return response + (
+        f'  Basic Variable Columns {basic_variable_columns} (pivot cols)\n'
+        f'  Free Variable Columns: {free_variable_columns} (cols without pivots)\n'
+        f'  Solution: {solution}\n'
+    )
 
 # Test matrices
 A = Matrix([
@@ -222,16 +220,19 @@ print("Matrix A:", solution_details(A))
 print("Matrix B:", solution_details(B))
 print("Matrix C:", solution_details(C))
 
-# Matrix A: Unique Solution:
-#   Basic Variable Columns [0, 1, 2]
-#   Free Variable Columns: []
+# Matrix A: Unique Solution (pivot position in each col):
+#   Basic Variable Columns [0, 1, 2] (pivot cols)
+#   Free Variable Columns: [] (cols without pivots)
 #   Solution: {x: 0, y: -1, z: 2}
-# 
+
 # Matrix B: No Solution.
-# 
-# Matrix C: Infinitely Many Solutions:
-#   Basic Variable Columns [0]
-#   Free Variable Columns: [1, 2]
+#   Basic Variable Columns [0, 1] (pivot cols)
+#   Free Variable Columns: [2] (cols without pivots)
+#   Solution: []
+
+# Matrix C: Infinitely Many Solutions (>= 1 coeff col with no pivots):
+#   Basic Variable Columns [0] (pivot cols)
+#   Free Variable Columns: [1, 2] (cols without pivots)
 #   Solution: {x: -2*y + 3*z + 4}
 ```
 </details>
