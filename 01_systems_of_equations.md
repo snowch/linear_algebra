@@ -84,6 +84,48 @@ print(B_augmented.rref())
 
 > **Proposition 1.4.4.** If every row of the coefficient matrix has a pivot position, then the corresponding system of linear equations is consistent.
 
+```python
+from sympy import Matrix
+
+def is_consistent(matrix):
+    coeff_matrix = matrix[:, :-1]  # Extracting only the coefficient matrix
+    rref_matrix = coeff_matrix.rref()[0]
+    num_cols = rref_matrix.shape[1]
+    num_pivots = sum(1 for row in rref_matrix.tolist() if any(row))
+    return num_pivots == coeff_matrix.shape[0]
+
+# Test matrices
+A = Matrix([
+    [1, 2, 3, 4],
+    [0, 1, 2, 3],
+    [0, 0, 1, 2]
+])
+
+B = Matrix([
+    [1, 2, 3, 4],
+    [0, 1, 2, 3],
+    [0, 0, 0, 1]
+])
+
+print("Matrix A is consistent:", is_consistent(A))
+print(A.rref())
+print()
+print("Matrix B is consistent:", is_consistent(B))
+print(B.rref())
+
+# Matrix A is consistent: True
+# (Matrix([
+# [1, 0, 0,  0],
+# [0, 1, 0, -1],
+# [0, 0, 1,  2]]), (0, 1, 2))
+# 
+# Matrix B is consistent: False
+# (Matrix([
+# [1, 0, -1, 0],
+# [0, 1,  2, 0],
+# [0, 0,  0, 1]]), (0, 1, 3))
+```
+
 #### The uniqueness of solutions
 
 > **Principle 1.4.5.**  Suppose that we consider a consistent linear system.
