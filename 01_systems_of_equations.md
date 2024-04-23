@@ -14,7 +14,6 @@ When we encounter a linear system, we often ask:
 <details>
 <summary>Sympy Example</summary>
 
-**Sympy** [docs](https://docs.sympy.org/latest/modules/matrices/matrices.html)
 ```python
 from sympy import Matrix
 from sympy.abc import x
