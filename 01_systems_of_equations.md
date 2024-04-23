@@ -12,6 +12,7 @@ When we encounter a linear system, we often ask:
 > **Definition 1.4.1**.  A pivot position in a matrix $A$ is the position of a leading entry in the reduced row echelon matrix of $A$.
 
 <details>
+<summary>Sympy Example</summary>
 
 **Sympy** [docs](https://docs.sympy.org/latest/modules/matrices/matrices.html)
 ```python
@@ -36,7 +37,8 @@ rref_pivots
 > **Proposition 1.4.3.**  A linear system is inconsistent if and only if there is a pivot position in the rightmost column of the corresponding augmented matrix.
 
 <details>
-
+<summary>Sympy Example</summary>
+    
 ```python
 from sympy import Matrix
 
@@ -87,7 +89,12 @@ print(B_augmented.rref())
 # [0, 0,  0, 1]]), (0, 1, 3))
 ```
 
+</details>
+
 > **Proposition 1.4.4.** If every row of the coefficient matrix has a pivot position, then the corresponding system of linear equations is consistent.
+
+<details>
+<summary>Sympy Example</summary>
 
 ```python
 from sympy import Matrix
@@ -139,7 +146,8 @@ print(B.rref())
 > - Columns that contain a pivot position correspond to basic variables while columns that do not correspond to free variables.
 
 <details>
-
+<summary>Sympy Example</summary>
+    
 ```python
 from sympy import symbols, Eq, solve, Matrix
 
