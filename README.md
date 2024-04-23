@@ -23,6 +23,13 @@ My notes for: https://understandinglinearalgebra.org/ula.html
  - [Subspaces]()
 
 #### Eigenvalues and eigenvectors - TODO
+ - [An introduction to eigenvalues and eigenvectors]()
+ - [Finding eigenvalues and eigenvectors]()
+ - [Diagonalization, similarity, and powers of a matrix]()
+ - [Dynamical systems]()
+ - [Markov chains and Google’s PageRank algorithm]()
+
+#### Linear algebra and computing - TODO
 
 ---
 
