@@ -1,4 +1,4 @@
-# Notes for "Understanding Linear Algebra by David Austin"
+# Study Notes for "Understanding Linear Algebra by David Austin"
 
 ----
 
