@@ -2,6 +2,8 @@
 
 ### Pivots
 
+---
+
 #### Two Fundamental Questions.
 
 When we encounter a linear system, we often ask:
@@ -30,6 +32,8 @@ rref_pivots
 # (0, 1) # tuple of pivot columns
 ```
 </details>
+
+---
 
 #### The existence of solutions
 
@@ -136,6 +140,9 @@ print(B.rref())
 ```
 
 </details>
+
+---
+
 
 #### The uniqueness of solutions
 
