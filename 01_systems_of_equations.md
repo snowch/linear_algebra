@@ -31,6 +31,7 @@ rref_pivots
 #### The existence of solutions
 
 > **Proposition 1.4.3.**  A linear system is inconsistent if and only if there is a pivot position in the rightmost column of the corresponding augmented matrix.
+
 > **Proposition 1.4.4.** If every row of the coefficient matrix has a pivot position, then the corresponding system of linear equations is consistent.
 
 #### The uniqueness of solutions
