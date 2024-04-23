@@ -187,7 +187,7 @@ def solution_details(augmented_matrix):
     if not solution:
         response = 'No Solution.\n'
     elif len(pivot_columns) == coeff_num_cols:
-        response = 'Unique Solution (pivot position in each col):\n'
+        response = 'Unique Solution (pivot position in each coeff col):\n'
     elif len(pivot_columns) < coeff_num_cols:
         response = 'Infinitely Many Solutions (>= 1 coeff col with no pivots):\n'
     
@@ -220,7 +220,7 @@ print("Matrix A:", solution_details(A))
 print("Matrix B:", solution_details(B))
 print("Matrix C:", solution_details(C))
 
-# Matrix A: Unique Solution (pivot position in each col):
+# Matrix A: Unique Solution (pivot position in each coeff col):
 #   Basic Variable Columns [0, 1, 2] (pivot cols)
 #   Free Variable Columns: [] (cols without pivots)
 #   Solution: {x: 0, y: -1, z: 2}
