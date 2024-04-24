@@ -160,6 +160,11 @@ from sympy import symbols, Eq, solve, Matrix, pprint
 x, y, z = symbols('x y z')
 
 def has_solution(augmented_matrix):
+    # Get the number of variables
+    num_variables = augmented_matrix.shape[1] - 1
+    
+    # Generate symbols for variables
+    variables = symbols('x:' + str(num_variables))
     
     # Extract coefficients and constants from the augmented matrix
     coefficients = augmented_matrix[:, :-1]
@@ -168,10 +173,11 @@ def has_solution(augmented_matrix):
     # Create equations from the coefficients and constants
     equations = []
     for i in range(len(constants)):
-        equation = Eq(coefficients[i, 0]*x + coefficients[i, 1]*y + coefficients[i, 2]*z, constants[i])
+        equation = Eq(sum(coefficients[i, j] * variables[j] for j in range(num_variables)), constants[i])
         equations.append(equation)
 
-    solution = solve((equations[0], equations[1], equations[2]), (x, y, z), dict=True)
+    # Solve the equations
+    solution = solve(equations, variables, dict=True)
     return solution
 
 def solution_details(augmented_matrix):
