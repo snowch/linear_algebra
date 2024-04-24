@@ -14,7 +14,7 @@ My notes for: https://understandinglinearalgebra.org/ula.html
  - [Vectors and linear combinations](./pages/2.1_vectors_and_linear_combinations.md)
  - [Matrix multiplication and linear combinations](./pages/2.2_matrix_multiplication_and_linear_combinations.md)
  - [The span of a set of vectors](./pages/2.3_the_span_of_a_set_of_vectors.md)
- - [Linear independence - TODO]()
+ - [Linear independence](./pages/2.4_linear_independence.md)
  - [Matrix transformations - TODO]()
  - [The geometry of matrix transformations - TODO]()
 
