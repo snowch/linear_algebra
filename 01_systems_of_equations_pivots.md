@@ -155,7 +155,7 @@ print(B.rref())
 <summary>Sympy Example</summary>
     
 ```python
-from sympy import symbols, Eq, solve, Matrix
+from sympy import symbols, Eq, solve, Matrix, pprint
 
 x, y, z = symbols('x y z')
 
@@ -171,7 +171,7 @@ def has_solution(augmented_matrix):
         equation = Eq(coefficients[i, 0]*x + coefficients[i, 1]*y + coefficients[i, 2]*z, constants[i])
         equations.append(equation)
 
-    solution = solve((equations[0], equations[1], equations[2]), (x, y, z))
+    solution = solve((equations[0], equations[1], equations[2]), (x, y, z), dict=True)
     return solution
 
 def solution_details(augmented_matrix):
@@ -185,9 +185,16 @@ def solution_details(augmented_matrix):
     '''
     
     coeff_matrix = augmented_matrix[:, :-1]  # Extracting only the coefficient matrix
+    const_matrix = augmented_matrix[:, -1:]
+    
     pivot_columns = coeff_matrix.rref()[1]
     coeff_num_cols = coeff_matrix.shape[0]
     
+    # useful to check if rightmost col has a pivot
+    aug_pivot_columns = augmented_matrix.rref()[1]
+    last_column_index = augmented_matrix.shape[1] - 1
+    last_column_is_pivot = last_column_index in aug_pivot_columns
+
     # columns with a pivot
     basic_variable_columns = list(pivot_columns)
     
@@ -201,12 +208,15 @@ def solution_details(augmented_matrix):
     if not solution:
         response = 'No Solution.\n'
     elif len(pivot_columns) == coeff_num_cols:
-        response = 'Unique Solution (pivot position in each coeff col):\n'
+        response = 'Unique Solution (pivot position in each col):\n'
     elif len(pivot_columns) < coeff_num_cols:
         response = 'Infinitely Many Solutions (>= 1 coeff col with no pivots):\n'
     
+    if last_column_is_pivot:
+        response += '  Inconsistent - rightmost column has pivot\n'
+    
     return response + (
-        f'  Basic Variable Columns {basic_variable_columns} (pivot cols)\n'
+        f'  Basic Variable Columns: {basic_variable_columns} (pivot cols)\n'
         f'  Free Variable Columns: {free_variable_columns} (cols without pivots)\n'
         f'  Solution: {solution}\n'
     )
@@ -231,22 +241,50 @@ C = Matrix([
 ])
 
 print("Matrix A:", solution_details(A))
-print("Matrix B:", solution_details(B))
-print("Matrix C:", solution_details(C))
+pprint(A.rref()[0])
+print()
 
-# Matrix A: Unique Solution (pivot position in each coeff col):
-#   Basic Variable Columns [0, 1, 2] (pivot cols)
+print("Matrix B:", solution_details(B))
+pprint(B.rref()[0])
+print()
+
+print("Matrix C:", solution_details(C))
+pprint(C.rref()[0])
+print()
+
+
+# Matrix A: Unique Solution (pivot position in each col):
+#   Basic Variable Columns: [0, 1, 2] (pivot cols)
 #   Free Variable Columns: [] (cols without pivots)
-#   Solution: {x: 0, y: -1, z: 2}
+#   Solution: [{x: 0, y: -1, z: 2}]
+
+# ⎡1  0  0  0 ⎤
+# ⎢           ⎥
+# ⎢0  1  0  -1⎥
+# ⎢           ⎥
+# ⎣0  0  1  2 ⎦
 
 # Matrix B: No Solution.
-#   Basic Variable Columns [0, 1] (pivot cols)
+#   Inconsistent - rightmost column has pivot
+#   Basic Variable Columns: [0, 1] (pivot cols)
 #   Free Variable Columns: [2] (cols without pivots)
 #   Solution: []
 
+# ⎡1  0  -1  0⎤
+# ⎢           ⎥
+# ⎢0  1  2   0⎥
+# ⎢           ⎥
+# ⎣0  0  0   1⎦
+
 # Matrix C: Infinitely Many Solutions (>= 1 coeff col with no pivots):
-#   Basic Variable Columns [0] (pivot cols)
+#   Basic Variable Columns: [0] (pivot cols)
 #   Free Variable Columns: [1, 2] (cols without pivots)
-#   Solution: {x: -2*y + 3*z + 4}
+#   Solution: [{x: -2*y + 3*z + 4}]
+
+# ⎡1  2  -3  4⎤
+# ⎢           ⎥
+# ⎢0  0  0   0⎥
+# ⎢           ⎥
+# ⎣0  0  0   0⎦
 ```
 </details>
