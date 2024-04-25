@@ -15,7 +15,7 @@ My notes for: https://understandinglinearalgebra.org/ula.html
  - [Matrix multiplication and linear combinations](./pages/2.2_matrix_multiplication_and_linear_combinations.md)
  - [The span of a set of vectors](./pages/2.3_the_span_of_a_set_of_vectors.md)
  - [Linear independence](./pages/2.4_linear_independence.md)
- - [Matrix transformations - TODO]()
+ - [Matrix transformations](./pages/2.5_matrix_transformations.md)
  - [The geometry of matrix transformations - TODO]()
 
 #### Invertibility, bases, and coordinate systems - TODO
