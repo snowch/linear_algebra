@@ -32,7 +32,8 @@ def my_solve(augmented_matrix):
 def solution_details(augmented_matrix):
     '''
     - If every column of the coefficient matrix contains a pivot position, 
-      then the system has a unique solution.
+      then the system has a unique solution
+    - If the constant column contains a pivot then there is no solution
     - If there is a column in the coefficient matrix that contains no pivot position, 
       then the system has infinitely many solutions.
     - Columns that contain a pivot position correspond to basic variables
