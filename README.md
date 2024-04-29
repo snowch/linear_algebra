@@ -12,6 +12,23 @@ My notes for: https://understandinglinearalgebra.org/ula.html
  <summary>Sage Code</summary>
 
 ```python
+def my_solve(augmented_matrix):
+    
+    A = augmented_matrix[:, :-1]
+    Y = augmented_matrix[:, -1]
+    
+    m, n = A.dimensions()
+    p, q = Y.dimensions()
+    if m!=p:
+        raise RuntimeError("The matrices have different numbers of rows")
+    X = vector([var("x_{}".format(i)) for i in [1..n]])
+    
+    sols = []
+    for j in range(q):
+        system = [A[i]*X==Y[i,j] for i in range(m)]
+        sols += solve(system, *X)
+    return sols
+
 def solution_details(augmented_matrix):
     '''
     - If every column of the coefficient matrix contains a pivot position, 
@@ -32,7 +49,7 @@ def solution_details(augmented_matrix):
     pivots = augmented_matrix.pivots()
     const_col = num_coeff_cols + 1
     
-    print("----------")
+    print("##############################", end="\n\n")
     print(augmented_matrix, end="\n\n")
     print(augmented_matrix.rref(), end="\n\n")
     # print("pivots: ", pivots, end="\n\n")
@@ -45,13 +62,20 @@ def solution_details(augmented_matrix):
             print("Unique Solution (pivot position in each col)")
         elif len(pivots) < num_coeff_cols:
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
-    
+            
+    print("Columns that:")
+    print(" - contain a pivot position correspond to basic variables")
+    print(" - do not contain a pivot position correspond to free variables")
+    print("Solution: ", my_solve(augmented_matrix), end="\n\n")
+
 # Examples
 
 M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,1])
 v = vector(QQ, [4,3,2])
 Maug = M.augment(v, subdivide=True)
 solution_details(Maug)
+
+# ##############################
 
 # [1 2 3|4]
 # [0 1 2|3]
@@ -62,11 +86,19 @@ solution_details(Maug)
 # [ 0  0  1| 2]
 
 # Unique Solution (pivot position in each col)
+# Columns that:
+#  - contain a pivot position correspond to basic variables
+#  - do not contain a pivot position correspond to free variables
+# Solution:  [[x_1 == 0, x_2 == -1, x_3 == 2]]
+
+# ##############################
 
 M = matrix(QQ, 2, [1,1,2,2])
 v = vector(QQ, [4,8])
 Maug = M.augment(v, subdivide=True)
 solution_details(Maug)
+
+# ##############################
 
 # [1 1|4]
 # [2 2|8]
@@ -75,11 +107,19 @@ solution_details(Maug)
 # [0 0|0]
 
 # Infinitely Many Solutions (>= 1 coeff col with no pivots)
+# Columns that:
+#  - contain a pivot position correspond to basic variables
+#  - do not contain a pivot position correspond to free variables
+# Solution:  [[x_1 == -r18 + 4, x_2 == r18]]
+
+# ##############################
 
 M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,0])
 v = vector(QQ, [4,3,1])
 Maug = M.augment(v, subdivide=True)
 solution_details(Maug)
+
+# ##############################
 
 # [1 2 3|4]
 # [0 1 2|3]
@@ -90,6 +130,12 @@ solution_details(Maug)
 # [ 0  0  0| 1]
 
 # No Solution (Inconsistent - const col has pivot)
+# Columns that:
+#  - contain a pivot position correspond to basic variables
+#  - do not contain a pivot position correspond to free variables
+# Solution:  []
+
+# ##############################
 ```
 
 </details>
