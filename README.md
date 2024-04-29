@@ -110,7 +110,7 @@ solution_details(Maug)
 # Columns that:
 #  - contain a pivot position correspond to basic variables
 #  - do not contain a pivot position correspond to free variables
-# Solution:  [[x_1 == -r18 + 4, x_2 == r18]]
+# Solution:  [[x_1 == -r1 + 4, x_2 == r1]]
 
 # ##############################
 
