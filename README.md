@@ -6,74 +6,97 @@ My notes for: https://understandinglinearalgebra.org/ula.html
 
 ----
 
-### Symp util
+### Sage Math utility
+
+<details>
+ <summary>Sage Code</summary>
 
 ```python
-A = Matrix([
-    [1, 2, 3, 4],
-    [0, 1, 2, 3],
-    [0, 0, 1, 2]
-])
+def solution_details(augmented_matrix):
+    '''
+    - If every column of the coefficient matrix contains a pivot position, 
+      then the system has a unique solution.
+    - If there is a column in the coefficient matrix that contains no pivot position, 
+      then the system has infinitely many solutions.
+    - Columns that contain a pivot position correspond to basic variables
+      Columns that do not contain a pivot position correspond to free variables.
+    '''
+    
+    try:
+        num_coeff_cols = augmented_matrix.subdivisions()[1][0]
+        if not num_coeff_cols > 0:
+            raise ValueError("Subdivided augmented matrix required1.")
+    except (AttributeError, IndexError):
+        raise ValueError("Subdivided augmented matrix required.")
+        
+    pivots = augmented_matrix.pivots()
+    const_col = num_coeff_cols + 1
+    
+    print("----------")
+    print(augmented_matrix, end="\n\n")
+    print(augmented_matrix.rref(), end="\n\n")
+    # print("pivots: ", pivots, end="\n\n")
+    
+    # zero base const col
+    if (const_col - 1) in pivots:
+        print('No Solution (Inconsistent - const col has pivot)')
+    else:
+        if (len(pivots)) == num_coeff_cols:
+            print("Unique Solution (pivot position in each col)")
+        elif len(pivots) < num_coeff_cols:
+            print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
+    
+# Examples
 
-B = Matrix([
-    [1, 2, 3, 4],
-    [0, 1, 2, 3],
-    [0, 0, 0, 1]
-])
+M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,1])
+v = vector(QQ, [4,3,2])
+Maug = M.augment(v, subdivide=True)
+solution_details(Maug)
 
-C = Matrix([
-    [1, 2, -3, 4],
-    [2, 4, -6, 8],
-    [3, 6, -9, 12]  # All entries in the last column are 0
-])
+# [1 2 3|4]
+# [0 1 2|3]
+# [0 0 1|2]
 
-print("Matrix A:", solution_details(A))
-pprint(A.rref()[0])
-print()
+# [ 1  0  0| 0]
+# [ 0  1  0|-1]
+# [ 0  0  1| 2]
 
-print("Matrix B:", solution_details(B))
-pprint(B.rref()[0])
-print()
+# Unique Solution (pivot position in each col)
 
-print("Matrix C:", solution_details(C))
-pprint(C.rref()[0])
-print()
+M = matrix(QQ, 2, [1,1,2,2])
+v = vector(QQ, [4,8])
+Maug = M.augment(v, subdivide=True)
+solution_details(Maug)
 
+# [1 1|4]
+# [2 2|8]
 
-# Matrix A: Unique Solution (pivot position in each col):
-#   Basic Variable Columns: [0, 1, 2] (pivot cols)
-#   Free Variable Columns: [] (cols without pivots)
-#   Solution: [{x: 0, y: -1, z: 2}]
+# [1 1|4]
+# [0 0|0]
 
-# ⎡1  0  0  0 ⎤
-# ⎢           ⎥
-# ⎢0  1  0  -1⎥
-# ⎢           ⎥
-# ⎣0  0  1  2 ⎦
+# Infinitely Many Solutions (>= 1 coeff col with no pivots)
 
-# Matrix B: No Solution.
-#   Inconsistent - rightmost column has pivot
-#   Basic Variable Columns: [0, 1] (pivot cols)
-#   Free Variable Columns: [2] (cols without pivots)
-#   Solution: []
+M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,0])
+v = vector(QQ, [4,3,1])
+Maug = M.augment(v, subdivide=True)
+solution_details(Maug)
 
-# ⎡1  0  -1  0⎤
-# ⎢           ⎥
-# ⎢0  1  2   0⎥
-# ⎢           ⎥
-# ⎣0  0  0   1⎦
+# [1 2 3|4]
+# [0 1 2|3]
+# [0 0 0|1]
 
-# Matrix C: Infinitely Many Solutions (>= 1 coeff col with no pivots):
-#   Basic Variable Columns: [0] (pivot cols)
-#   Free Variable Columns: [1, 2] (cols without pivots)
-#   Solution: [{x: -2*y + 3*z + 4}]
+# [ 1  0 -1| 0]
+# [ 0  1  2| 0]
+# [ 0  0  0| 1]
 
-# ⎡1  2  -3  4⎤
-# ⎢           ⎥
-# ⎢0  0  0   0⎥
-# ⎢           ⎥
-# ⎣0  0  0   0⎦
+# No Solution (Inconsistent - const col has pivot)
 ```
+
+</details>
+
+----
+
+### Symp utility
 
 <details>
  <summary>Sympy Code</summary>
