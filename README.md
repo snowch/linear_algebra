@@ -35,8 +35,6 @@ def my_solve(augmented_matrix):
         
     return sols, X_pivots, X_free
 
-
-
 def solution_details(augmented_matrix):
     '''
     - If every column of the coefficient matrix contains a pivot position, 
@@ -59,9 +57,11 @@ def solution_details(augmented_matrix):
     const_col = num_coeff_cols + 1
     
     print("##############################", end="\n\n")
-    print(augmented_matrix, end="\n\n")
-    print(augmented_matrix.rref(), end="\n\n")
-    # print("pivots: ", pivots, end="\n\n")
+    
+    print("Matrix and RREF:")
+    import sys
+    u=[augmented_matrix,augmented_matrix.rref()]
+    sys.displayhook(u)
     
     # zero base const col
     if (const_col - 1) in pivots:
@@ -79,9 +79,9 @@ def solution_details(augmented_matrix):
         import operator
         solution = reduce(operator.concat, solution)
     
-    print("Columns that:")
-    print(" - contain a pivot position correspond to basic variables")
-    print(" - do not contain a pivot position correspond to free variables")
+    # print("Columns that:")
+    # print(" - contain a pivot position correspond to basic variables")
+    # print(" - do not contain a pivot position correspond to free variables")
     print("Pivots (leading) variables: ", X_pivots)
     print("Free variables: ", X_free)
     print("Solution: ")
@@ -106,53 +106,51 @@ M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,0])
 v = vector(QQ, [4,3,1])
 Maug = M.augment(v, subdivide=True)
 solution_details(Maug)
+```
+Outputs:
 
-
+```text
 ##############################
 
-[1 2 3|4]
-[0 1 2|3]
-[0 0 1|2]
-
-[ 1  0  0| 0]
-[ 0  1  0|-1]
-[ 0  0  1| 2]
-
+Matrix and RREF
+[
+[1 2 3|4]  [ 1  0  0| 0]
+[0 1 2|3]  [ 0  1  0|-1]
+[0 0 1|2], [ 0  0  1| 2]
+]
 Unique Solution (pivot position in each col)
-Columns that:
- - contain a pivot position correspond to basic variables
- - do not contain a pivot position correspond to free variables
-Solution:  [[x_0 == 0, x_1 == -1, x_2 == 2]]
+Pivots (leading) variables:  (x_0, x_1, x_2)
+Free variables:  ()
+Solution: 
+  x_0 == 0
+  x_1 == -1
+  x_2 == 2
 
 ##############################
 
-[1 1|4]
-[2 2|8]
-
-[1 1|4]
-[0 0|0]
-
+Matrix and RREF
+[
+[1 1|4]  [1 1|4]
+[2 2|8], [0 0|0]
+]
 Infinitely Many Solutions (>= 1 coeff col with no pivots)
-Columns that:
- - contain a pivot position correspond to basic variables
- - do not contain a pivot position correspond to free variables
-Solution:  [[x_0 == -x_1 + 4]]
+Pivots (leading) variables:  (x_0)
+Free variables:  (x_1)
+Solution: 
+  x_0 == -x_1 + 4
 
 ##############################
 
-[1 2 3|4]
-[0 1 2|3]
-[0 0 0|1]
-
-[ 1  0 -1| 0]
-[ 0  1  2| 0]
-[ 0  0  0| 1]
-
+Matrix and RREF
+[
+[1 2 3|4]  [ 1  0 -1| 0]
+[0 1 2|3]  [ 0  1  2| 0]
+[0 0 0|1], [ 0  0  0| 1]
+]
 No Solution (Inconsistent - const col has pivot)
-Columns that:
- - contain a pivot position correspond to basic variables
- - do not contain a pivot position correspond to free variables
-Solution:  []
+Pivots (leading) variables:  (x_0, x_1)
+Free variables:  (x_2)
+Solution: 
 
 ##############################
 ```
