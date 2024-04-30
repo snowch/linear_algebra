@@ -73,7 +73,9 @@ def solution_details(augmented_matrix):
     print("Columns that:")
     print(" - contain a pivot position correspond to basic variables")
     print(" - do not contain a pivot position correspond to free variables")
-    print("Solution: ", my_solve(augmented_matrix), end="\n\n")
+    print("Solution: ")
+    [ print(f'  {s}') for s in solution[0] ]
+    print()
 
 # Examples
 
