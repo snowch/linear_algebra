@@ -26,12 +26,14 @@ def my_solve(augmented_matrix):
 
     # don't include the free variables in solve
     X_pivots = vector([var("x_{}".format(i)) for i in [0..n-1] if i in A.pivots()])
+    X_free = vector([var("x_{}".format(i)) for i in [0..n-1] if i not in A.pivots()])
 
     sols = []
     for j in range(q):
         system = [A[i]*X==Y[i,j] for i in range(m)]
         sols += solve(system, *X_pivots)
-    return sols
+        
+    return sols, X_pivots, X_free
 
 
 
@@ -71,7 +73,7 @@ def solution_details(augmented_matrix):
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
 
     
-    solution = my_solve(augmented_matrix)
+    solution, X_pivots, X_free = my_solve(augmented_matrix)
     if solution:
         # flatten solution list
         import operator
@@ -80,6 +82,8 @@ def solution_details(augmented_matrix):
     print("Columns that:")
     print(" - contain a pivot position correspond to basic variables")
     print(" - do not contain a pivot position correspond to free variables")
+    print("Pivots (leading) variables: ", X_pivots)
+    print("Free variables: ", X_free)
     print("Solution: ")
     [ print(f'  {s}') for s in solution if len(solution) ]
     print()
