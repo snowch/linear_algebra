@@ -80,16 +80,12 @@ def solution_details(augmented_matrix, vars=None):
         elif len(pivots) < num_coeff_cols:
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
 
-    
     solution, X, X_pivots, X_free = my_solve(augmented_matrix, vars)
     if solution:
         # flatten solution list
         import operator
         solution = reduce(operator.concat, solution)
     
-    # print("Columns that:")
-    # print(" - contain a pivot position correspond to basic variables")
-    # print(" - do not contain a pivot position correspond to free variables")
     print("Variables: ", X)
     print("Pivots (leading) variables: ", X_pivots)
     print("Free variables: ", X_free)
