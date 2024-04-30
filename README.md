@@ -12,7 +12,7 @@ My notes for: https://understandinglinearalgebra.org/ula.html
  <summary>Sage Code</summary>
 
 ```python
-def my_solve(augmented_matrix):
+def my_solve(augmented_matrix, vars=None):
 
     A = augmented_matrix[:, :-1]
     Y = augmented_matrix[:, -1]
@@ -22,20 +22,28 @@ def my_solve(augmented_matrix):
 
     if m!=p:
         raise RuntimeError("The matrices have different numbers of rows")
-    X = vector([var("x_{}".format(i)) for i in [0..n-1]])
-
-    # don't include the free variables in solve
-    X_pivots = vector([var("x_{}".format(i)) for i in [0..n-1] if i in A.pivots()])
-    X_free = vector([var("x_{}".format(i)) for i in [0..n-1] if i not in A.pivots()])
-
+        
+    if vars and len(vars) != n:
+        raise RuntimeError(f"Provided variables '{vars}' != number of columns '{n}'")
+    
+    if vars:
+        # don't include the free variables in solve
+        X = vector([var(vars[i]) for i in [0..n-1]])
+        X_pivots = vector([var(X[i]) for i in [0..n-1] if i in A.pivots()])
+        X_free = vector([var(X[i]) for i in [0..n-1] if i not in A.pivots()])
+    else:
+        X = vector([var(f"x_{i}") for i in [0..n-1]])
+        X_pivots = vector([var(f"x_{i}") for i in [0..n-1] if i in A.pivots()])
+        X_free = vector([var(f"x_{i}") for i in [0..n-1] if i not in A.pivots()])
+     
     sols = []
     for j in range(q):
         system = [A[i]*X==Y[i,j] for i in range(m)]
         sols += solve(system, *X_pivots)
         
-    return sols, X_pivots, X_free
+    return sols, X, X_pivots, X_free
 
-def solution_details(augmented_matrix):
+def solution_details(augmented_matrix, vars=None):
     '''
     - If every column of the coefficient matrix contains a pivot position, 
       then the system has a unique solution
@@ -73,7 +81,7 @@ def solution_details(augmented_matrix):
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
 
     
-    solution, X_pivots, X_free = my_solve(augmented_matrix)
+    solution, X, X_pivots, X_free = my_solve(augmented_matrix, vars)
     if solution:
         # flatten solution list
         import operator
@@ -82,6 +90,7 @@ def solution_details(augmented_matrix):
     # print("Columns that:")
     # print(" - contain a pivot position correspond to basic variables")
     # print(" - do not contain a pivot position correspond to free variables")
+    print("Variables: ", X)
     print("Pivots (leading) variables: ", X_pivots)
     print("Free variables: ", X_free)
     print("Solution: ")
@@ -105,20 +114,21 @@ solution_details(Maug)
 M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,0])
 v = vector(QQ, [4,3,1])
 Maug = M.augment(v, subdivide=True)
-solution_details(Maug)
+solution_details(Maug, var('a b c'))
 ```
 Outputs:
 
 ```text
 ##############################
 
-Matrix and RREF
+Matrix and RREF:
 [
 [1 2 3|4]  [ 1  0  0| 0]
 [0 1 2|3]  [ 0  1  0|-1]
 [0 0 1|2], [ 0  0  1| 2]
 ]
 Unique Solution (pivot position in each col)
+Variables:  (x_0, x_1, x_2)
 Pivots (leading) variables:  (x_0, x_1, x_2)
 Free variables:  ()
 Solution: 
@@ -128,12 +138,13 @@ Solution:
 
 ##############################
 
-Matrix and RREF
+Matrix and RREF:
 [
 [1 1|4]  [1 1|4]
 [2 2|8], [0 0|0]
 ]
 Infinitely Many Solutions (>= 1 coeff col with no pivots)
+Variables:  (x_0, x_1)
 Pivots (leading) variables:  (x_0)
 Free variables:  (x_1)
 Solution: 
@@ -141,15 +152,16 @@ Solution:
 
 ##############################
 
-Matrix and RREF
+Matrix and RREF:
 [
 [1 2 3|4]  [ 1  0 -1| 0]
 [0 1 2|3]  [ 0  1  2| 0]
 [0 0 0|1], [ 0  0  0| 1]
 ]
 No Solution (Inconsistent - const col has pivot)
-Pivots (leading) variables:  (x_0, x_1)
-Free variables:  (x_2)
+Variables:  (a, b, c)
+Pivots (leading) variables:  (a, b)
+Free variables:  (c)
 Solution: 
 
 ##############################
