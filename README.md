@@ -25,7 +25,7 @@ def my_solve(augmented_matrix):
     X = vector([var("x_{}".format(i)) for i in [0..n-1]])
 
     # don't include the free variables in solve
-    X_pivots = vector(X[:max(A.pivots())+1])
+    X_pivots = vector([var("x_{}".format(i)) for i in [0..n-1] if i in A.pivots()])
 
     sols = []
     for j in range(q):
