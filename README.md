@@ -69,14 +69,16 @@ def solution_details(augmented_matrix):
             print("Unique Solution (pivot position in each col)")
         elif len(pivots) < num_coeff_cols:
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
-            
+    
+    solution = my_solve(augmented_matrix)
+    
     print("Columns that:")
     print(" - contain a pivot position correspond to basic variables")
     print(" - do not contain a pivot position correspond to free variables")
     print("Solution: ")
     [ print(f'  {s}') for s in solution[0] ]
     print()
-
+    
 # Examples
 
 M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,1])
