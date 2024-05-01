@@ -35,13 +35,35 @@ def my_solve(augmented_matrix, vars=None):
         X = vector([var(f"x_{i}") for i in [0..n-1]])
         X_pivots = vector([var(f"x_{i}") for i in [0..n-1] if i in A.pivots()])
         X_free = vector([var(f"x_{i}") for i in [0..n-1] if i not in A.pivots()])
-     
+    
     sols = []
     for j in range(q):
-        system = [A[i]*X==Y[i,j] for i in range(m)]
-        sols += solve(system, *X_pivots)
-        
+        system = [ A[i]*X==Y[i,j] for i in range(m) ]
+        sol = solve(system, *X_pivots)
+ 
+        if len(sol) and len(X_free):
+            print()
+            for s in sol[0]:
+                # Extracting coefficients dynamically based on X_free
+                coefficients = [s.rhs().coefficient(var) for var in X_free]
+                constant_term = s.rhs() - sum(coeff * var for coeff, var in zip(coefficients, X_free))
+
+                # Printing the extracted coefficients along with variables
+                coeff_var_pairs = [(coeff, var) for coeff, var in zip(coefficients, X_free)]
+                coeff_var_strings = [f"{coeff}{var}" for coeff, var in coeff_var_pairs if coeff != 0]
+
+                print(s.lhs(), " ||| ", constant_term, " ".join(coeff_var_strings))
+
+            # Print coefficients for free variables dynamically
+            for free_var in X_free:
+                print(free_var, " ||| ", 0, *[1 if var == free_var else 0 for var in X_free])
+            print()
+                
+            sols += sol
+
+   
     return sols, X, X_pivots, X_free
+
 
 def solution_details(augmented_matrix, vars=None):
     '''
@@ -80,18 +102,21 @@ def solution_details(augmented_matrix, vars=None):
         elif len(pivots) < num_coeff_cols:
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
 
+    
     solution, X, X_pivots, X_free = my_solve(augmented_matrix, vars)
     if solution:
         # flatten solution list
         import operator
         solution = reduce(operator.concat, solution)
     
+    # Printing variables, pivots, free variables, and constants
     print("Variables: ", X)
     print("Pivots (leading) variables: ", X_pivots)
     print("Free variables: ", X_free)
     print("Solution: ")
     [ print(f'  {s}') for s in solution if len(solution) ]
     print()
+    
     
 # Examples
 
