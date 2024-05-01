@@ -96,6 +96,10 @@ def solution_details(augmented_matrix, vars=None):
     print()
 
     if solution:
+        # flatten solution list
+        import operator
+        solution = reduce(operator.concat, solution)
+        
         print("Solution: ")
         [print(f'  {s}') for s in solution if len(solution)]
         print()
@@ -113,10 +117,10 @@ v = vector(QQ, [4,3,2])
 Maug = M.augment(v, subdivide=True)
 solution_details(Maug)
 
-M = matrix(QQ, 2, [1,1,2,2])
-v = vector(QQ, [4,8])
+M = matrix(QQ, 3, [2,1,0,-1,0,   0,1,0,1,1,   1,0,-1,2,0])
+v = vector(QQ, [4,4,0])
 Maug = M.augment(v, subdivide=True)
-solution_details(Maug)
+solution_details(Maug, var('x y z w u'))
 
 M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,0])
 v = vector(QQ, [4,3,1])
