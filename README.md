@@ -155,10 +155,12 @@ Matrix and RREF:
 [0 1 2|3]  [ 0  1  0|-1]
 [0 0 1|2], [ 0  0  1| 2]
 ]
+
 Unique Solution (pivot position in each col)
 Variables:  (x_0, x_1, x_2)
 Pivots (leading) variables:  (x_0, x_1, x_2)
 Free variables:  ()
+
 Solution: 
   x_0 == 0
   x_1 == -1
@@ -171,12 +173,19 @@ Matrix and RREF:
 [1 1|4]  [1 1|4]
 [2 2|8], [0 0|0]
 ]
+
 Infinitely Many Solutions (>= 1 coeff col with no pivots)
 Variables:  (x_0, x_1)
 Pivots (leading) variables:  (x_0)
 Free variables:  (x_1)
+
 Solution: 
   x_0 == -x_1 + 4
+
+Parametized solution vector form: 
+x_0        | 4          -1x_1
+x_1        | 0          1x_1 
+
 
 ##############################
 
@@ -186,11 +195,11 @@ Matrix and RREF:
 [0 1 2|3]  [ 0  1  2| 0]
 [0 0 0|1], [ 0  0  0| 1]
 ]
+
 No Solution (Inconsistent - const col has pivot)
 Variables:  (a, b, c)
 Pivots (leading) variables:  (a, b)
 Free variables:  (c)
-Solution: 
 
 ##############################
 ```
