@@ -13,36 +13,35 @@ My notes for: https://understandinglinearalgebra.org/ula.html
 
 ```python
 def my_solve(augmented_matrix, vars=None):
-
     A = augmented_matrix[:, :-1]
     Y = augmented_matrix[:, -1]
 
     m, n = A.dimensions()
     p, q = Y.dimensions()
 
-    if m!=p:
+    if m != p:
         raise RuntimeError("The matrices have different numbers of rows")
-        
+
     if vars and len(vars) != n:
         raise RuntimeError(f"Provided variables '{vars}' != number of columns '{n}'")
-    
+
     if vars:
         # don't include the free variables in solve
-        X = vector([var(vars[i]) for i in [0..n-1]])
-        X_pivots = vector([var(X[i]) for i in [0..n-1] if i in A.pivots()])
-        X_free = vector([var(X[i]) for i in [0..n-1] if i not in A.pivots()])
+        X = vector([var(vars[i]) for i in range(n)])
+        X_pivots = vector([var(X[i]) for i in range(n) if i in A.pivots()])
+        X_free = vector([var(X[i]) for i in range(n) if i not in A.pivots()])
     else:
-        X = vector([var(f"x_{i}") for i in [0..n-1]])
-        X_pivots = vector([var(f"x_{i}") for i in [0..n-1] if i in A.pivots()])
-        X_free = vector([var(f"x_{i}") for i in [0..n-1] if i not in A.pivots()])
-    
+        X = vector([var(f"x_{i}") for i in range(n)])
+        X_pivots = vector([var(f"x_{i}") for i in range(n) if i in A.pivots()])
+        X_free = vector([var(f"x_{i}") for i in range(n) if i not in A.pivots()])
+
     sols = []
+    param_sol = ""
     for j in range(q):
-        system = [ A[i]*X==Y[i,j] for i in range(m) ]
+        system = [A[i] * X == Y[i, j] for i in range(m)]
         sol = solve(system, *X_pivots)
- 
-        if len(sol) and len(X_free):
-            print()
+
+        if len(sol):
             for s in sol[0]:
                 # Extracting coefficients dynamically based on X_free
                 coefficients = [s.rhs().coefficient(var) for var in X_free]
@@ -52,17 +51,18 @@ def my_solve(augmented_matrix, vars=None):
                 coeff_var_pairs = [(coeff, var) for coeff, var in zip(coefficients, X_free)]
                 coeff_var_strings = [f"{coeff}{var}" for coeff, var in coeff_var_pairs if coeff != 0]
 
-                print(s.lhs(), " ||| ", constant_term, " ".join(coeff_var_strings))
+                if len(X_free):
+                    # Aligning variables vertically
+                    param_sol += f"{str(s.lhs()):<10} | {str(constant_term):<10} " + " ".join(f"{cv:<5}" for cv in coeff_var_strings) + "\n"
 
-            # Print coefficients for free variables dynamically
-            for free_var in X_free:
-                print(free_var, " ||| ", 0, *[1 if var == free_var else 0 for var in X_free])
-            print()
-                
+            if len(X_free):
+                # Print coefficients for free variables dynamically
+                for free_var in X_free:
+                    param_sol += f"{str(free_var).ljust(10)} | 0          " + (" ".join((str(Integer(1)) + str(free_var)).ljust(5) if var == free_var else str(Integer(0)).ljust(5) for var in X_free)) + "\n"
+
             sols += sol
 
-   
-    return sols, X, X_pivots, X_free
+    return sols, X, X_pivots, X_free, param_sol
 
 
 def solution_details(augmented_matrix, vars=None):
@@ -75,48 +75,55 @@ def solution_details(augmented_matrix, vars=None):
     - Columns that contain a pivot position correspond to basic variables
       Columns that do not contain a pivot position correspond to free variables.
     '''
-    
+
     try:
         num_coeff_cols = augmented_matrix.subdivisions()[1][0]
         if not num_coeff_cols > 0:
             raise ValueError("Subdivided augmented matrix required1.")
     except (AttributeError, IndexError):
         raise ValueError("Subdivided augmented matrix required.")
-        
+
     pivots = augmented_matrix.pivots()
     const_col = num_coeff_cols + 1
-    
+
     print("##############################", end="\n\n")
-    
+
     print("Matrix and RREF:")
     import sys
-    u=[augmented_matrix,augmented_matrix.rref()]
+
+    u = [augmented_matrix, augmented_matrix.rref()]
     sys.displayhook(u)
-    
+
+    print()
     # zero base const col
     if (const_col - 1) in pivots:
         print('No Solution (Inconsistent - const col has pivot)')
     else:
-        if (len(pivots)) == num_coeff_cols:
+        if len(pivots) == num_coeff_cols:
             print("Unique Solution (pivot position in each col)")
         elif len(pivots) < num_coeff_cols:
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
 
-    
-    solution, X, X_pivots, X_free = my_solve(augmented_matrix, vars)
+    solution, X, X_pivots, X_free, param_sol = my_solve(augmented_matrix, vars)
     if solution:
         # flatten solution list
         import operator
         solution = reduce(operator.concat, solution)
-    
+
     # Printing variables, pivots, free variables, and constants
     print("Variables: ", X)
     print("Pivots (leading) variables: ", X_pivots)
     print("Free variables: ", X_free)
-    print("Solution: ")
-    [ print(f'  {s}') for s in solution if len(solution) ]
     print()
     
+    if solution:
+        print("Solution: ")
+        [print(f'  {s}') for s in solution if len(solution)]
+        print()
+    if param_sol:
+        print("Parametized solution vector form: ")
+        print(param_sol)
+        print()
     
 # Examples
 
