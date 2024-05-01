@@ -26,14 +26,12 @@ def my_solve(augmented_matrix, vars=None):
         raise RuntimeError(f"Provided variables '{vars}' != number of columns '{n}'")
 
     if vars:
-        # don't include the free variables in solve
         X = vector([var(vars[i]) for i in range(n)])
-        X_pivots = vector([var(X[i]) for i in range(n) if i in A.pivots()])
-        X_free = vector([var(X[i]) for i in range(n) if i not in A.pivots()])
     else:
         X = vector([var(f"x_{i}") for i in range(n)])
-        X_pivots = vector([var(f"x_{i}") for i in range(n) if i in A.pivots()])
-        X_free = vector([var(f"x_{i}") for i in range(n) if i not in A.pivots()])
+
+    X_pivots = vector([var(X[i]) for i in range(n) if i in A.pivots()])
+    X_free = vector([var(X[i]) for i in range(n) if i not in A.pivots()])
 
     sols = []
     param_sol = ""
@@ -43,20 +41,16 @@ def my_solve(augmented_matrix, vars=None):
 
         if len(sol):
             for s in sol[0]:
-                # Extracting coefficients dynamically based on X_free
                 coefficients = [s.rhs().coefficient(var) for var in X_free]
                 constant_term = s.rhs() - sum(coeff * var for coeff, var in zip(coefficients, X_free))
 
-                # Printing the extracted coefficients along with variables
                 coeff_var_pairs = [(coeff, var) for coeff, var in zip(coefficients, X_free)]
                 coeff_var_strings = [f"{coeff}{var}" for coeff, var in coeff_var_pairs if coeff != 0]
 
                 if len(X_free):
-                    # Aligning variables vertically
                     param_sol += f"{str(s.lhs()):<10} | {str(constant_term):<10} " + " ".join(f"{cv:<5}" for cv in coeff_var_strings) + "\n"
 
             if len(X_free):
-                # Print coefficients for free variables dynamically
                 for free_var in X_free:
                     param_sol += f"{str(free_var).ljust(10)} | 0          " + (" ".join((str(Integer(1)) + str(free_var)).ljust(5) if var == free_var else str(Integer(0)).ljust(5) for var in X_free)) + "\n"
 
@@ -66,20 +60,10 @@ def my_solve(augmented_matrix, vars=None):
 
 
 def solution_details(augmented_matrix, vars=None):
-    '''
-    - If every column of the coefficient matrix contains a pivot position, 
-      then the system has a unique solution
-    - If the constant column contains a pivot then there is no solution
-    - If there is a column in the coefficient matrix that contains no pivot position, 
-      then the system has infinitely many solutions.
-    - Columns that contain a pivot position correspond to basic variables
-      Columns that do not contain a pivot position correspond to free variables.
-    '''
-
     try:
         num_coeff_cols = augmented_matrix.subdivisions()[1][0]
         if not num_coeff_cols > 0:
-            raise ValueError("Subdivided augmented matrix required1.")
+            raise ValueError("Subdivided augmented matrix required.")
     except (AttributeError, IndexError):
         raise ValueError("Subdivided augmented matrix required.")
 
@@ -95,7 +79,7 @@ def solution_details(augmented_matrix, vars=None):
     sys.displayhook(u)
 
     print()
-    # zero base const col
+
     if (const_col - 1) in pivots:
         print('No Solution (Inconsistent - const col has pivot)')
     else:
@@ -105,26 +89,23 @@ def solution_details(augmented_matrix, vars=None):
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
 
     solution, X, X_pivots, X_free, param_sol = my_solve(augmented_matrix, vars)
-    if solution:
-        # flatten solution list
-        import operator
-        solution = reduce(operator.concat, solution)
-
-    # Printing variables, pivots, free variables, and constants
+    
     print("Variables: ", X)
     print("Pivots (leading) variables: ", X_pivots)
     print("Free variables: ", X_free)
     print()
-    
+
     if solution:
         print("Solution: ")
         [print(f'  {s}') for s in solution if len(solution)]
         print()
+
     if param_sol:
         print("Parametized solution vector form: ")
         print(param_sol)
         print()
-    
+
+
 # Examples
 
 M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,1])
@@ -132,12 +113,10 @@ v = vector(QQ, [4,3,2])
 Maug = M.augment(v, subdivide=True)
 solution_details(Maug)
 
-
 M = matrix(QQ, 2, [1,1,2,2])
 v = vector(QQ, [4,8])
 Maug = M.augment(v, subdivide=True)
 solution_details(Maug)
-
 
 M = matrix(QQ, 3, [1,2,3,0,1,2,0,0,0])
 v = vector(QQ, [4,3,1])
