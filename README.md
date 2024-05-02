@@ -79,6 +79,13 @@ def solution_details(augmented_matrix, vars=None):
     sys.displayhook(u)
 
     print()
+    
+    # is RHS all zeros
+    is_zero = all(component == 0 for component in augmented_matrix[:, -1])
+    if is_zero:
+        print('Matrix is homogeneous, must be consistent (always >= 1 solution).')
+    else:
+        print('Matrix is not homogeneous - can be inconsistent.')
 
     if (const_col - 1) in pivots:
         print('No Solution (Inconsistent - const col has pivot)')
@@ -105,7 +112,7 @@ def solution_details(augmented_matrix, vars=None):
         print()
 
     if param_sol_dict:
-        print("Parametized solution vectors (particular + unrestricted combination): ")
+        print("Parametized solution vectors (particular + homogenous): ")
         for key, value in param_sol_dict.items():
             print(f"{key}: {str(value[0]).rjust(10)} {' '.join(str(v).rjust(10) for v in value[1])}")
         print()
