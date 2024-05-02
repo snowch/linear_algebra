@@ -91,9 +91,9 @@ def solution_details(augmented_matrix, vars=None):
         print('No Solution (Inconsistent - const col has pivot)')
     else:
         if len(pivots) == num_coeff_cols:
-            print("Unique Solution (pivot position in each col)")
+            print("Unique Solution (Consistent, pivot position in each col)")
         elif len(pivots) < num_coeff_cols:
-            print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
+            print('Infinitely Many Solutions (Consistent, >= 1 coeff col with no pivots)')
 
     solution, X, X_pivots, X_free, param_sol_dict = my_solve(augmented_matrix, vars)
     
