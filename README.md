@@ -34,7 +34,7 @@ def my_solve(augmented_matrix, vars=None):
     X_free = vector([var(X[i]) for i in range(n) if i not in A.pivots()])
 
     sols = []
-    param_sol = ""
+    param_sol_dict = {}
     for j in range(q):
         system = [A[i] * X == Y[i, j] for i in range(m)]
         sol = solve(system, *X_pivots)
@@ -48,15 +48,15 @@ def my_solve(augmented_matrix, vars=None):
                 coeff_var_strings = [f"{coeff}{var}" for coeff, var in coeff_var_pairs if coeff != 0]
 
                 if len(X_free):
-                    param_sol += f"{str(s.lhs()):<10} | {str(constant_term):<10} " + " ".join(f"{cv:<5}" for cv in coeff_var_strings) + "\n"
+                    param_sol_dict[str(s.lhs())] = [constant_term, coeff_var_strings]
 
             if len(X_free):
                 for free_var in X_free:
-                    param_sol += f"{str(free_var).ljust(10)} | 0          " + (" ".join((str(Integer(1)) + str(free_var)).ljust(5) if var == free_var else str(Integer(0)).ljust(5) for var in X_free)) + "\n"
+                    param_sol_dict[str(free_var)] = [0, [f'1{var}' if var == free_var else f'0{var}' for var in X_free]]
 
             sols += sol
 
-    return sols, X, X_pivots, X_free, param_sol
+    return sols, X, X_pivots, X_free, param_sol_dict
 
 
 def solution_details(augmented_matrix, vars=None):
@@ -88,7 +88,7 @@ def solution_details(augmented_matrix, vars=None):
         elif len(pivots) < num_coeff_cols:
             print('Infinitely Many Solutions (>= 1 coeff col with no pivots)')
 
-    solution, X, X_pivots, X_free, param_sol = my_solve(augmented_matrix, vars)
+    solution, X, X_pivots, X_free, param_sol_dict = my_solve(augmented_matrix, vars)
     
     print("Variables: ", X)
     print("Pivots (leading) variables: ", X_pivots)
@@ -104,9 +104,12 @@ def solution_details(augmented_matrix, vars=None):
         [print(f'  {s}') for s in solution if len(solution)]
         print()
 
-    if param_sol:
+    if param_sol_dict:
+        from pprint import pprint
         print("Parametized solution vector form: ")
-        print(param_sol)
+        for key, value in param_sol_dict.items():
+            print(f"{key}: {value[0]}, {value[1]}")
+
         print()
 
 
