@@ -105,7 +105,7 @@ def solution_details(augmented_matrix, vars=None):
         print()
 
     if param_sol_dict:
-        print("Parametized solution vectors (particular + homogenous): ")
+        print("Parametized solution vectors (particular + unrestricted combination): ")
         for key, value in param_sol_dict.items():
             print(f"{key}: {str(value[0]).rjust(10)} {' '.join(str(v).rjust(10) for v in value[1])}")
         print()
