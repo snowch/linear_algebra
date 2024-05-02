@@ -43,9 +43,9 @@ def my_solve(augmented_matrix, vars=None):
             for s in sol[0]:
                 coefficients = [s.rhs().coefficient(var) for var in X_free]
                 constant_term = s.rhs() - sum(coeff * var for coeff, var in zip(coefficients, X_free))
-
+                
                 coeff_var_pairs = [(coeff, var) for coeff, var in zip(coefficients, X_free)]
-                coeff_var_strings = [f"{coeff}{var}" for coeff, var in coeff_var_pairs if coeff != 0]
+                coeff_var_strings = [f"{coeff}{var}" for coeff, var in coeff_var_pairs]
 
                 if len(X_free):
                     param_sol_dict[str(s.lhs())] = [constant_term, coeff_var_strings]
@@ -105,10 +105,9 @@ def solution_details(augmented_matrix, vars=None):
         print()
 
     if param_sol_dict:
-        from pprint import pprint
         print("Parametized solution vector form: ")
         for key, value in param_sol_dict.items():
-            print(f"{key}: {str(value[0]).rjust(2)} {' '.join(str(v).rjust(10) for v in value[1])}")
+            print(f"{key}: {str(value[0]).rjust(10)} {' '.join(str(v).rjust(10) for v in value[1])}")
         print()
 
 # Examples
