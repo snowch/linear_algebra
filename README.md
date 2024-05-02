@@ -108,10 +108,8 @@ def solution_details(augmented_matrix, vars=None):
         from pprint import pprint
         print("Parametized solution vector form: ")
         for key, value in param_sol_dict.items():
-            print(f"{key}: {value[0]}, {value[1]}")
-
+            print(f"{key}: {str(value[0]).rjust(2)} {' '.join(str(v).rjust(10) for v in value[1])}")
         print()
-
 
 # Examples
 
