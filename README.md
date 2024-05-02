@@ -83,7 +83,7 @@ def solution_details(augmented_matrix, vars=None):
     # is RHS all zeros
     is_zero = all(component == 0 for component in augmented_matrix[:, -1])
     if is_zero:
-        print('Matrix is homogeneous, must be consistent (always >= 1 solution).')
+        print('Matrix is homogeneous, must be consistent (always at least one soln - the 0 vector).')
     else:
         print('Matrix is not homogeneous - can be inconsistent.')
 
@@ -112,7 +112,8 @@ def solution_details(augmented_matrix, vars=None):
         print()
 
     if param_sol_dict:
-        print("Parametized solution vectors (particular + homogenous): ")
+        print("Parametized solution vectors")
+        print("(particular + unrestricted combination)")
         for key, value in param_sol_dict.items():
             print(f"{key}: {str(value[0]).rjust(10)} {' '.join(str(v).rjust(10) for v in value[1])}")
         print()
