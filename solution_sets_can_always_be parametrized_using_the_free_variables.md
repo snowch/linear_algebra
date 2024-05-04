@@ -1,34 +1,43 @@
-Proof: solution sets can always be parametrized using the free variables. 
+**Proof**: solution sets can always be parametrized using the free variables. 
 
-**Base Case (n=1):** Consider a single linear equation:
+Let's prove this statement using mathematical induction.
 
-\[ a_1x_1 = b \]
+**Claim:** Given a system of linear equations, the solution sets can always be parametrized using the free variables.
 
-If \(x_1\) is a free variable, then the solution set can be expressed as \(x_1 = \frac{b}{a_1}\), which is a parametric representation.
+**Basis Step:** 
+For a system of linear equations with only one equation and one variable, it's trivial. Let's denote the variable as $`x_1`$. If the equation is $`ax_1 = b`$, where $`a`$ and $`b`$ are constants and $`a \neq 0`$, then the solution set is $`\{ \frac{b}{a} \}`$, which can be represented as $`x_1 = \frac{b}{a}`$. Since there are no free variables, there's no parametrization needed.
 
-**Inductive Step:** Assume the statement holds true for systems of \(n\) linear equations. We want to prove it for \(n+1\) equations.
+**Inductive Hypothesis:** 
+Assume that the statement is true for a system of $`k`$ linear equations with $`k`$ variables. That is, we can parametrize the solution set using the free variables.
 
-Consider a system of \(n+1\) linear equations:
+**Inductive Step:** 
+Now, consider a system of $`(k + 1)`$ linear equations with $`(k + 1)`$ variables. We want to show that if the statement holds for $`k`$, it also holds for $`(k + 1)`$.
 
-\[ 
-\begin{cases}
-a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1 \\
-a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2 \\
+Let the system of equations be represented as:
+
+$`
+\begin{align*}
+a_{11}x_1 + a_{12}x_2 + \cdots + a_{1k}x_k + a_{1(k+1)}x_{k+1} &= b_1 \\
+a_{21}x_1 + a_{22}x_2 + \cdots + a_{2k}x_k + a_{2(k+1)}x_{k+1} &= b_2 \\
 \vdots \\
-a_{(n+1)1}x_1 + a_{(n+1)2}x_2 + \dots + a_{(n+1)n}x_n = b_{n+1}
-\end{cases}
-\]
+a_{(k+1)1}x_1 + a_{(k+1)2}x_2 + \cdots + a_{(k+1)k}x_k + a_{(k+1)(k+1)}x_{k+1} &= b_{k+1} \\
+\end{align*}
+`$
 
-Assume there are \(k\) free variables.
+As per the inductive hypothesis, we assume that the solution set can be parametrized using the first $`k`$ variables $`x_1, x_2, \ldots, x_k`$. Let's denote the solution set by $`S_k`$. So, the solution set for the first $`k`$ equations can be represented as $`S_k = \{ x_1 = f_1(t_1, t_2, \ldots, t_m), x_2 = f_2(t_1, t_2, \ldots, t_m), \ldots, x_k = f_k(t_1, t_2, \ldots, t_m) \}`$, where $`t_1, t_2, \ldots, t_m`$ are the parameters.
 
-**Case 1:** If \(k = 0\), all variables are bound variables, and the solution set is either empty or a single point, which can be trivially parametrized.
+Now, let's consider the $`(k + 1)`$-th equation:
 
-**Case 2:** If \(k > 0\), at least one variable, say \(x_n\), is a free variable. 
+$`[ a_{(k+1)1}x_1 + a_{(k+1)2}x_2 + \cdots + a_{(k+1)k}x_k + a_{(k+1)(k+1)}x_{k+1} = b_{k+1} ]`$
 
-Now, let's focus on the first \(n\) equations. Since there are \(k\) free variables, we can express the remaining \(n - k\) variables in terms of these \(k\) free variables. This is possible because each equation reduces the dimensionality of the solution space by 1.
+We can rewrite this equation as:
 
-Now, consider the \(n+1\)th equation. Since the first \(n - k\) variables are expressed in terms of the free variables, the equation is only dependent on the \(k\) free variables. We can express one of the variables (let's say \(x_n\)) in terms of the other \(k - 1\) free variables.
+$`[ a_{(k+1)1}f_1(t_1, t_2, \ldots, t_m) + a_{(k+1)2}f_2(t_1, t_2, \ldots, t_m) + \cdots + a_{(k+1)k}f_k(t_1, t_2, \ldots, t_m) + a_{(k+1)(k+1)}x_{k+1} = b_{k+1} ]`$
 
-Thus, we have expressed all \(n+1\) variables in terms of the \(k\) free variables, completing the induction step.
+Now, we can solve for $`x_{k+1}`$:
 
-Therefore, by mathematical induction, the statement holds for all systems of linear equations.
+$`[ x_{k+1} = \frac{b_{k+1} - a_{(k+1)1}f_1(t_1, t_2, \ldots, t_m) - a_{(k+1)2}f_2(t_1, t_2, \ldots, t_m) - \cdots - a_{(k+1)k}f_k(t_1, t_2, \ldots, t_m)}{a_{(k+1)(k+1)}} ]`$
+
+This expression for $`x_{k+1}`$ clearly depends on the parameters $`t_1, t_2, \ldots, t_m`$, thus $`x_{k+1}`$ can also be parametrized. Therefore, the statement holds for $`(k + 1)`$ equations.
+
+By mathematical induction, the statement holds true for any number of linear equations, and hence, the solution sets can always be parametrized using the free variables.
