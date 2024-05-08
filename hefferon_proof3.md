@@ -1,4 +1,4 @@
-**Proof**
+**Proof** [Nonhomogeneous Systems](https://en.wikibooks.org/wiki/Linear_Algebra/General_%3D_Particular_%2B_Homogeneous) (General = Particular + Homogeneous)
 
 We've seen examples of all three happening so we need only prove that those are the only possibilities.
 
